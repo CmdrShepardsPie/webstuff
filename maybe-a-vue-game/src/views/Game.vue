@@ -215,33 +215,33 @@ export default class GameComponent extends Vue {
 
   destroyed() {
     window.removeEventListener('keydown', this.handleKeydown);
-    clearInterval(this.interval);
+    clearTimeout(this.interval);
   }
 
   created() {
     this.rows.forEach(row => {
       row.columns.forEach(column => {
-        const doIt = Math.round(Math.random() * this.rowCount) === 0;
+        const doIt = Math.floor(Math.random() * (this.rowCount * 5)) === 0;
         if (doIt) {
-          const liveNeighborMin = Math.round(Math.random() * 8);
-          const liveNeighborMax = Math.round(
+          const liveNeighborMin = (Math.random() * 8);
+          const liveNeighborMax = (
             Math.max(liveNeighborMin, Math.random() * 8)
           );
 
           // const liveAgeMin = 0;
-          const liveAgeMax = Math.round(Math.random() * 360);
+          const liveAgeMax = (Math.random() * 360);
 
-          const spawnNeighborMin = Math.round(Math.random() * 8);
-          const spawnNeighborMax = Math.round(
+          const spawnNeighborMin = (Math.random() * 8);
+          const spawnNeighborMax = (
             Math.max(spawnNeighborMin, Math.random() * 8)
           );
 
-          const aggroAttack = Math.round(Math.random() * 100);
-          const aggroDefense = Math.round(Math.random() * 100);
+          const aggroAttack = (Math.random() * 100);
+          const aggroDefense = (Math.random() * 100);
 
-          const colorRed = Math.round(Math.random() * 255);
-          const colorGreen = Math.round(Math.random() * 255);
-          const colorBlue = Math.round(Math.random() * 255);
+          const colorRed = (Math.random() * 255);
+          const colorGreen = (Math.random() * 255);
+          const colorBlue = (Math.random() * 255);
           // const spawnAgeMin = Math.random() * 9;
           // const spawnAgeMax = Math.max(spawnAgeMin, Math.random() * 9);
           const newCell: Cell = {
@@ -297,18 +297,20 @@ export default class GameComponent extends Vue {
     // console.log('created');
     window.addEventListener('keydown', this.handleKeydown);
     // const count = 0;
-    // const doLoop = () => {
-    this.interval = setInterval(() => {
-      this.gameLoop();
-    }, 10);
-    // doLoop();
+    const doLoop = () => {
+      this.interval = setTimeout(() => {
+        this.gameLoop();
+        doLoop();
+      }, 0);
+    };
+    doLoop();
   }
 
   gameLoop() {
     const kill: Column[] = [];
     const spawn: Column[] = [];
 
-    let attacks = 0;
+    // let attacks = 0;
     // console.log('interval');
     this.rows.forEach((row, rowIndex) => {
       row.columns.forEach((column, columnIndex) => {
@@ -329,17 +331,17 @@ export default class GameComponent extends Vue {
           ) {
             kill.push(column);
           } else {
-            occupiedNeighbors.forEach(neighbor => {
-              const neighborCell = neighbor.cell;
-              if (
-                cell.fingerprint !== neighborCell.fingerprint &&
-                cell.props.aggro.attack > neighborCell.props.aggro.defense
-              ) {
-                kill.push(neighbor);
-                attacks += 1;
-                // console.log(cellFingerprint, 'attacked', neighborFingerprint);
-              }
-            });
+            // occupiedNeighbors.forEach(neighbor => {
+            //   const neighborCell = neighbor.cell;
+            //   if (
+            //     cell.fingerprint !== neighborCell.fingerprint &&
+            //     cell.props.aggro.attack > neighborCell.props.aggro.defense
+            //   ) {
+            //     kill.push(neighbor);
+            //     attacks += 1;
+            //     // console.log(cellFingerprint, 'attacked', neighborFingerprint);
+            //   }
+            // });
           }
         } else {
           // no cell
@@ -350,12 +352,17 @@ export default class GameComponent extends Vue {
             }),
             { min: 0, max: 0 }
           );
-          averageSpawnNeighborThreshold.min = Math.round(
+
+          averageSpawnNeighborThreshold.min = (
             averageSpawnNeighborThreshold.min / occupiedNeighbors.length
-          );
-          averageSpawnNeighborThreshold.max = Math.round(
+          ) + ((Math.random() - Math.random()) / 100);
+
+          averageSpawnNeighborThreshold.max = (
             averageSpawnNeighborThreshold.max / occupiedNeighbors.length
-          );
+          ) + ((Math.random() - Math.random()) / 100);
+
+          averageSpawnNeighborThreshold.min = Math.max(Math.min(averageSpawnNeighborThreshold.min, 8), 0);
+          averageSpawnNeighborThreshold.max = Math.max(Math.min(averageSpawnNeighborThreshold.max, 8), 0);
 
           // const averageSpawnAgeThreshold = occupiedNeighbors.reduce(
           //   (output, cell) => ({
@@ -376,12 +383,17 @@ export default class GameComponent extends Vue {
             }),
             { min: 0, max: 0 }
           );
-          averageLiveNeighborThreshold.min = Math.round(
+
+          averageLiveNeighborThreshold.min = (
             averageLiveNeighborThreshold.min / occupiedNeighbors.length
-          );
-          averageLiveNeighborThreshold.max = Math.round(
+          ) + ((Math.random() - Math.random()) / 100);
+
+          averageLiveNeighborThreshold.max = (
             averageLiveNeighborThreshold.max / occupiedNeighbors.length
-          );
+          ) + ((Math.random() - Math.random()) / 100);
+
+          averageLiveNeighborThreshold.min = Math.max(Math.min(averageLiveNeighborThreshold.min, 8), 0);
+          averageLiveNeighborThreshold.max = Math.max(Math.min(averageLiveNeighborThreshold.max, 8), 0);
 
           const averageLiveAgeThreshold = occupiedNeighbors.reduce(
             (output, neighbor) => ({
@@ -389,9 +401,11 @@ export default class GameComponent extends Vue {
             }),
             { max: 0 }
           );
-          averageLiveAgeThreshold.max = Math.round(
+
+          averageLiveAgeThreshold.max = (
             averageLiveAgeThreshold.max / occupiedNeighbors.length
-          );
+          ) + ((Math.random() - Math.random()) / 1);
+
 
           const averageLiveAggroThreshold = occupiedNeighbors.reduce(
             (output, neighbor) => ({
@@ -400,12 +414,15 @@ export default class GameComponent extends Vue {
             }),
             { defense: 0, attack: 0 }
           );
-          averageLiveAggroThreshold.defense = Math.round(
+
+          averageLiveAggroThreshold.defense = (
             averageLiveAggroThreshold.defense / occupiedNeighbors.length
-          );
-          averageLiveAggroThreshold.attack = Math.round(
+          ) + ((Math.random() - Math.random()) / 1);
+
+          averageLiveAggroThreshold.attack = (
             averageLiveAggroThreshold.attack / occupiedNeighbors.length
-          );
+          ) + ((Math.random() - Math.random()) / 1);
+
 
           const averageColorThreshold = occupiedNeighbors.reduce(
             (output, neighbor) => ({
@@ -415,15 +432,23 @@ export default class GameComponent extends Vue {
             }),
             { red: 0, green: 0, blue: 0 }
           );
-          averageColorThreshold.red = Math.round(
+
+          averageColorThreshold.red = (
             averageColorThreshold.red / occupiedNeighbors.length
-          );
-          averageColorThreshold.green = Math.round(
+          ) + ((Math.random() - Math.random()) * 1);
+
+          averageColorThreshold.green = (
             averageColorThreshold.green / occupiedNeighbors.length
-          );
-          averageColorThreshold.blue = Math.round(
+          ) + ((Math.random() - Math.random()) * 1);
+
+          averageColorThreshold.blue = (
             averageColorThreshold.blue / occupiedNeighbors.length
-          );
+          ) + ((Math.random() - Math.random()) * 1);
+
+          averageColorThreshold.red = Math.max(Math.min(averageColorThreshold.red, 255), 0);
+          averageColorThreshold.green = Math.max(Math.min(averageColorThreshold.green, 255), 0);
+          averageColorThreshold.blue = Math.max(Math.min(averageColorThreshold.blue, 255), 0);
+
 
           if (
             occupiedNeighbors.length >= averageSpawnNeighborThreshold.min &&
@@ -497,27 +522,27 @@ export default class GameComponent extends Vue {
     //   }
     // });
     // const allS = Object.keys(this.allSpecies);
-    const livingS = Object.keys(livingSpecies);
-    console.log(
-      // 'cells',
-      // this.cells.length,
-      'births',
-      spawn.length,
-      'deaths',
-      kill.length,
-      'attacks',
-      attacks,
-      // '# all species',
-      // allS.length,
-      // 'all time dominant',
-      // allS.indexOf(allDominant.name),
-      allDominant.count,
-      '# living species',
-      livingS.length,
-      // 'living dominant',
-      // allS.indexOf(livingDominant.name),
-      livingDominant.count
-    );
+    // const livingS = Object.keys(livingSpecies);
+    // console.log(
+    //   // 'cells',
+    //   // this.cells.length,
+    //   'births',
+    //   spawn.length,
+    //   'deaths',
+    //   kill.length,
+    //   'attacks',
+    //   attacks,
+    //   // '# all species',
+    //   // allS.length,
+    //   // 'all time dominant',
+    //   // allS.indexOf(allDominant.name),
+    //   allDominant.count,
+    //   '# living species',
+    //   livingS.length,
+    //   // 'living dominant',
+    //   // allS.indexOf(livingDominant.name),
+    //   livingDominant.count
+    // );
   }
 }
 </script>
