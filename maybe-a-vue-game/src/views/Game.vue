@@ -221,27 +221,27 @@ export default class GameComponent extends Vue {
   created() {
     this.rows.forEach(row => {
       row.columns.forEach(column => {
-        const doIt = Math.floor(Math.random() * this.rowCount) === 0;
+        const doIt = Math.round(Math.random() * this.rowCount) === 0;
         if (doIt) {
-          const liveNeighborMin = Math.floor(Math.random() * 8);
-          const liveNeighborMax = Math.floor(
+          const liveNeighborMin = Math.round(Math.random() * 8);
+          const liveNeighborMax = Math.round(
             Math.max(liveNeighborMin, Math.random() * 8)
           );
 
           // const liveAgeMin = 0;
-          const liveAgeMax = Math.floor(Math.random() * 360);
+          const liveAgeMax = Math.round(Math.random() * 360);
 
-          const spawnNeighborMin = 1 + Math.floor(Math.random() * 7);
-          const spawnNeighborMax = Math.floor(
+          const spawnNeighborMin = Math.round(Math.random() * 8);
+          const spawnNeighborMax = Math.round(
             Math.max(spawnNeighborMin, Math.random() * 8)
           );
 
-          const aggroAttack = Math.floor(Math.random() * 100);
-          const aggroDefense = Math.floor(Math.random() * 100);
+          const aggroAttack = Math.round(Math.random() * 100);
+          const aggroDefense = Math.round(Math.random() * 100);
 
-          const colorRed = Math.floor(Math.random() * 255);
-          const colorGreen = Math.floor(Math.random() * 255);
-          const colorBlue = Math.floor(Math.random() * 255);
+          const colorRed = Math.round(Math.random() * 255);
+          const colorGreen = Math.round(Math.random() * 255);
+          const colorBlue = Math.round(Math.random() * 255);
           // const spawnAgeMin = Math.random() * 9;
           // const spawnAgeMax = Math.max(spawnAgeMin, Math.random() * 9);
           const newCell: Cell = {
@@ -350,10 +350,10 @@ export default class GameComponent extends Vue {
             }),
             { min: 0, max: 0 }
           );
-          averageSpawnNeighborThreshold.min = Math.floor(
+          averageSpawnNeighborThreshold.min = Math.round(
             averageSpawnNeighborThreshold.min / occupiedNeighbors.length
           );
-          averageSpawnNeighborThreshold.max = Math.floor(
+          averageSpawnNeighborThreshold.max = Math.round(
             averageSpawnNeighborThreshold.max / occupiedNeighbors.length
           );
 
@@ -376,10 +376,10 @@ export default class GameComponent extends Vue {
             }),
             { min: 0, max: 0 }
           );
-          averageLiveNeighborThreshold.min = Math.floor(
+          averageLiveNeighborThreshold.min = Math.round(
             averageLiveNeighborThreshold.min / occupiedNeighbors.length
           );
-          averageLiveNeighborThreshold.max = Math.floor(
+          averageLiveNeighborThreshold.max = Math.round(
             averageLiveNeighborThreshold.max / occupiedNeighbors.length
           );
 
@@ -389,7 +389,7 @@ export default class GameComponent extends Vue {
             }),
             { max: 0 }
           );
-          averageLiveAgeThreshold.max = Math.floor(
+          averageLiveAgeThreshold.max = Math.round(
             averageLiveAgeThreshold.max / occupiedNeighbors.length
           );
 
@@ -400,10 +400,10 @@ export default class GameComponent extends Vue {
             }),
             { defense: 0, attack: 0 }
           );
-          averageLiveAggroThreshold.defense = Math.floor(
+          averageLiveAggroThreshold.defense = Math.round(
             averageLiveAggroThreshold.defense / occupiedNeighbors.length
           );
-          averageLiveAggroThreshold.attack = Math.floor(
+          averageLiveAggroThreshold.attack = Math.round(
             averageLiveAggroThreshold.attack / occupiedNeighbors.length
           );
 
@@ -415,13 +415,13 @@ export default class GameComponent extends Vue {
             }),
             { red: 0, green: 0, blue: 0 }
           );
-          averageColorThreshold.red = Math.floor(
+          averageColorThreshold.red = Math.round(
             averageColorThreshold.red / occupiedNeighbors.length
           );
-          averageColorThreshold.green = Math.floor(
+          averageColorThreshold.green = Math.round(
             averageColorThreshold.green / occupiedNeighbors.length
           );
-          averageColorThreshold.blue = Math.floor(
+          averageColorThreshold.blue = Math.round(
             averageColorThreshold.blue / occupiedNeighbors.length
           );
 
