@@ -229,7 +229,7 @@ export default class GameComponent extends Vue {
           );
 
           // const liveAgeMin = 0;
-          const liveAgeMax = (Math.random() * 360);
+          const liveAgeMax = (Math.random() * 100);
 
           const spawnNeighborMin = (Math.random() * 8);
           const spawnNeighborMax = (
@@ -435,15 +435,15 @@ export default class GameComponent extends Vue {
 
           averageColorThreshold.red = (
             averageColorThreshold.red / occupiedNeighbors.length
-          ) + ((Math.random() - Math.random()) * 1);
+          ) + ((Math.random() - Math.random()) * 10);
 
           averageColorThreshold.green = (
             averageColorThreshold.green / occupiedNeighbors.length
-          ) + ((Math.random() - Math.random()) * 1);
+          ) + ((Math.random() - Math.random()) * 10);
 
           averageColorThreshold.blue = (
             averageColorThreshold.blue / occupiedNeighbors.length
-          ) + ((Math.random() - Math.random()) * 1);
+          ) + ((Math.random() - Math.random()) * 10);
 
           averageColorThreshold.red = Math.max(Math.min(averageColorThreshold.red, 255), 0);
           averageColorThreshold.green = Math.max(Math.min(averageColorThreshold.green, 255), 0);
