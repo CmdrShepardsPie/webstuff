@@ -22,7 +22,8 @@ import Vue from 'vue';
 import { Row } from '@/interface/row';
 import Conway from '@/logic/conway';
 
-const rowCount = 100, columnCount = 100;
+const rowCount = 50;
+const columnCount = 100;
 const conway = new Conway(rowCount, columnCount);
 
 @Component({
@@ -52,11 +53,19 @@ export default class GameComponent extends Vue {
   }
 
   created() {
+    let count = 0;
     const doLoop = () => {
       this.interval = setTimeout(() => {
+        count++;
+        const start = Date.now();
         conway.step();
+        const end = Date.now();
+        const diff = end - start;
+        if (count % 10 === 0) {
+          console.log('took', diff, 'ms', Math.round(1000 / diff), 'fps');
+        }
         doLoop();
-      }, 1);
+      }, 10);
     };
     doLoop();
   }

@@ -15,7 +15,6 @@ export default class Conway {
     }
   }
   public step() {
-    console.log('step');
     const kill: Cell[] = [];
     const spawn: { cell: Cell, neighbors: Cell[] }[] = [];
     for (let row = 0; row < this.rowCount; row++) {
