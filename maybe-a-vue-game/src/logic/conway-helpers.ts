@@ -1,4 +1,4 @@
-import { Cell, CellRange } from '@/interface/cell';
+import { Cell, CellRange } from '@/interfaces/cell';
 
 export function initializeRandomCell(cell: Cell) {
   cell.props.live.neighbors.min = Math.random() * 8;

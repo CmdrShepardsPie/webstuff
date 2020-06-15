@@ -1,4 +1,4 @@
-import { Column } from '@/interface/column';
+import { Column } from '@/interfaces/column';
 
 export interface Row {
   rowId: number;

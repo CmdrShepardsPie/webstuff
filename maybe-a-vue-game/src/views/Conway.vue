@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import Vue from 'vue';
-import { Row } from '@/interface/row';
+import { Row } from '@/interfaces/row';
 import Conway from '@/logic/conway';
 
 const rowCount = 50;
@@ -68,23 +68,25 @@ export default class GameComponent extends Vue {
 
 <style lang="scss" scoped>
 .grid {
-  display: inline-block;
-  /*display: inline-grid;*/
-  /*grid-template-columns: repeat(30, 10px [col-start]);*/
-  /*grid-template-rows: repeat(30, 10px [row-start]);*/
-  /*border-top: 1px solid black;*/
-  /*border-left: 1px solid black;*/
-  background: black;
-  /*box-shadow: black 0 0 100px 100px;*/
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  justify-content: center;
+  background: #111;
+  height: 100vh;
 }
 .row {
-  height: 5px;
+  display: flex;
+  /*flex: auto;*/
+  flex-direction: row;
+  justify-content: center;
+  height: 1vh;
+  /*width: 50%;*/
 }
 .column {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  /*border-bottom: 1px solid black;*/
-  /*border-right: 1px solid black;*/
+  /*height: 1vh;*/
+  width: 1vh;
+  /*width: 1vh;*/
+  /*height: 1vh;*/
 }
 </style>

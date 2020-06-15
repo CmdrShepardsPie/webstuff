@@ -1,4 +1,4 @@
-import { Cell, CellRange } from '@/interface/cell';
+import { Cell, CellRange } from '@/interfaces/cell';
 import { attackCells, initializeRandomCell, mergeCells, shouldCellDie, shouldCellSpawn } from '@/logic/conway-helpers';
 
 export default class Conway {
