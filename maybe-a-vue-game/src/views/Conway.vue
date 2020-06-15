@@ -23,14 +23,14 @@ import { Row } from '@/interface/row';
 import Conway from '@/logic/conway';
 
 const rowCount = 50;
-const columnCount = 100;
+const columnCount = 50;
 const conway = new Conway(rowCount, columnCount);
 
 @Component({
   name: 'game-component'
 })
 export default class GameComponent extends Vue {
-  interval = 0;
+  timer = 0;
   rows: Row[] = [...new Array(rowCount)].map((a, row) => {
     return {
       rowId: row,
@@ -42,20 +42,14 @@ export default class GameComponent extends Vue {
     };
   });
 
-  handleKeydown(event: KeyboardEvent) {
-    if (/^Arrow/.test(event.key)) {
-      event.preventDefault();
-    }
-  }
-
   destroyed() {
-    clearTimeout(this.interval);
+    clearTimeout(this.timer);
   }
 
   created() {
     let count = 0;
     const doLoop = () => {
-      this.interval = setTimeout(() => {
+      this.timer = setTimeout(() => {
         count++;
         const start = Date.now();
         conway.step();
