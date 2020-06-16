@@ -14,10 +14,11 @@ export function initializeRandomCell(cell: Cell) {
 
   cell.fingerprint = JSON.stringify(cell.props);
 
-  cell.age = 0;
+  cell.living.age.setting = 0;
+  cell.living.alive.setting = true;
 }
 
-export function mergeCells(cells: Cell[], targetCell: Cell) {
+export function mergeCells(cells: Cell[], targetCell: Cell, mutate: boolean) {
   targetCell.props.live.neighbors.min = 0;
   targetCell.props.live.neighbors.max = 0;
   targetCell.props.live.age.max = 0;
@@ -54,9 +55,22 @@ export function mergeCells(cells: Cell[], targetCell: Cell) {
   targetCell.props.color.green /= cells.length;
   targetCell.props.color.blue /= cells.length;
 
+  if (mutate) {
+    targetCell.props.live.neighbors.min += (Math.random() - Math.random()) / 10;
+    targetCell.props.live.neighbors.max += (Math.random() - Math.random()) / 10;
+    targetCell.props.live.age.max += (Math.random() - Math.random());
+    targetCell.props.spawn.neighbors.min += (Math.random() - Math.random()) / 10;
+    targetCell.props.spawn.neighbors.max += (Math.random() - Math.random()) / 10;
+    targetCell.props.aggro.defense += (Math.random() - Math.random());
+    targetCell.props.aggro.attack += (Math.random() - Math.random());
+    targetCell.props.color.red += (Math.random() - Math.random()) * 10;
+    targetCell.props.color.green += (Math.random() - Math.random()) * 10;
+    targetCell.props.color.blue += (Math.random() - Math.random()) * 10;
+  }
   targetCell.fingerprint = JSON.stringify(targetCell.props);
 
-  targetCell.age = 0;
+  targetCell.living.age.setting = 0;
+  targetCell.living.alive.setting = true;
 }
 
 export function averageSpawnThreshold(occupiedNeighbors: Cell[]) {
@@ -74,7 +88,7 @@ export function averageSpawnThreshold(occupiedNeighbors: Cell[]) {
 export function shouldCellDie(cell: Cell, occupiedNeighbors: Cell[]) {
   return occupiedNeighbors.length < cell.props.live.neighbors.min ||
     occupiedNeighbors.length > cell.props.live.neighbors.max ||
-    cell.age > cell.props.live.age.max;
+    (cell.living.alive.setting && cell.living.age.setting > cell.props.live.age.max);
 }
 
 export function shouldCellSpawn(cell: Cell, occupiedNeighbors: Cell[]) {

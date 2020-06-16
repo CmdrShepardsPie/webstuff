@@ -1,19 +1,23 @@
 export interface Cell {
-  // point: number;
-  age: number;
+  living: CellLiving;
   fingerprint: string;
-  // species: number;
   props: CellProperties;
 }
 
 export interface CellProperties {
-  live: CellLive;
+  live: CellLife;
   spawn: CellSpawn;
   aggro: CellAggro;
   color: CellColor;
 }
 
-export interface CellLive {
+export interface CellLiving {
+  // Use a "setting" property within an object so that watchers can narrow down observers for performance
+  age: { setting: number };
+  alive: { setting: boolean };
+}
+
+export interface CellLife {
   neighbors: CellRange;
   age: CellRange;
 }
@@ -48,12 +52,22 @@ export class CellRange implements CellRange {
   }
 }
 
-export class CellLive implements CellLive {
+export class CellLiving implements CellLiving {
+  age: { setting: number } = { setting: -1 };
+  alive: { setting: boolean } = { setting: false };
+  constructor(cellLiving?: CellLiving) {
+    if (cellLiving) {
+      Object.assign(this, cellLiving);
+    }
+  }
+}
+
+export class CellLife implements CellLife {
   age = new CellRange();
   neighbors = new CellRange();
-  constructor(cellLive?: CellLive) {
-    if (cellLive) {
-      Object.assign(this, cellLive);
+  constructor(cellLife?: CellLife) {
+    if (cellLife) {
+      Object.assign(this, cellLife);
     }
   }
 }
@@ -91,7 +105,7 @@ export class CellColor implements CellColor {
 export class CellProperties implements CellProperties {
   aggro = new CellAggro();
   color = new CellColor();
-  live = new CellLive();
+  live = new CellLife();
   spawn = new CellSpawn();
   constructor(cellProperties?: CellProperties) {
     if (cellProperties) {
@@ -101,8 +115,8 @@ export class CellProperties implements CellProperties {
 }
 
 export class Cell implements Cell {
-  age = -1;
   fingerprint = '';
+  living = new CellLiving();
   props = new CellProperties();
   constructor(cell?: Cell) {
     if (cell) {

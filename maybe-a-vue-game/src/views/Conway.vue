@@ -6,10 +6,9 @@
         :key="column.columnId"
         class="column"
         :style="{
-          backgroundColor:
-            column.cell.age >= 0
-              ? `rgb(${column.cell.props.color.red}, ${column.cell.props.color.green}, ${column.cell.props.color.blue})`
-              : 'black'
+          backgroundColor: column.alive.setting
+            ? `rgb(${column.color.red}, ${column.color.green}, ${column.color.blue})`
+            : 'black'
         }"
       ></div>
     </div>
@@ -37,7 +36,8 @@ export default class GameComponent extends Vue {
       columns: [...new Array(columnCount)].map((b, column) => ({
         rowId: row,
         columnId: column,
-        cell: conway.getCellAt(row, column)
+        alive: { setting: true }, // conway.getCellAt(row, column).living.alive,
+        color: conway.getCellAt(row, column).props.color
       }))
     };
   });
@@ -47,19 +47,19 @@ export default class GameComponent extends Vue {
   }
 
   created() {
-    let count = 0;
+    // let count = 0;
     const doLoop = () => {
+      // count++;
+      const start = Date.now();
       this.timer = setTimeout(() => {
-        count++;
-        const start = Date.now();
         conway.step();
+        doLoop();
         const end = Date.now();
         const diff = end - start;
-        if (count % 10 === 0) {
-          console.log('took', diff, 'ms', Math.round(1000 / diff), 'fps');
-        }
-        doLoop();
-      }, 10);
+        // if (count % 10 === 0) {
+        console.log('took', diff, 'ms', Math.round(1000 / diff), 'fps');
+      }, 0);
+      // }
     };
     doLoop();
   }

@@ -1,4 +1,4 @@
-import { Cell, CellRange } from '@/interfaces/cell';
+import { Cell } from '@/interfaces/cell';
 import { attackCells, initializeRandomCell, mergeCells, shouldCellDie, shouldCellSpawn } from '@/logic/conway-helpers';
 
 export default class Conway {
@@ -21,8 +21,8 @@ export default class Conway {
       for (let column = 0; column < this.columnCount; column++) {
         const cell = this.getCellAt(row, column);
         const neighbors = this.getOccupiedNeighbors(row, column);
-        if (cell.age >= 0) {
-          cell.age += 1;
+        if (cell.living.age.setting >= 0) {
+          cell.living.age.setting += 1;
           if (shouldCellDie(cell, neighbors)) {
             kill.push(cell);
           } else {
@@ -35,12 +35,14 @@ export default class Conway {
     }
     let k: Cell;
     for (k of kill) {
-      k.age = -1;
+      k.living.age.setting = -1;
+      k.living.alive.setting = false;
     }
     let s: { cell: Cell, neighbors: Cell[] };
     for (s of spawn) {
-      mergeCells(s.neighbors, s.cell);
-      s.cell.age = 0;
+      mergeCells(s.neighbors, s.cell, false);
+      s.cell.living.age.setting = 0;
+      s.cell.living.alive.setting = true;
     }
   }
   private getOccupiedNeighbors(
@@ -52,7 +54,7 @@ export default class Conway {
     let p: { row: number, column: number };
     for (p of perimeter) {
       const cell = this.getCellAt(p.row, p.column);
-      if (cell.age >= 0) {
+      if (cell.living.age.setting >= 0) {
         neighbors.push(cell);
       }
     }
