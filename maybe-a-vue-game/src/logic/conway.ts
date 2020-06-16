@@ -21,7 +21,7 @@ export default class Conway {
       for (let column = 0; column < this.columnCount; column++) {
         const cell = this.getCellAt(row, column);
         const neighbors = this.getOccupiedNeighbors(row, column);
-        if (cell.living.age.setting >= 0) {
+        if (cell.living.alive.setting) {
           cell.living.age.setting += 1;
           if (shouldCellDie(cell, neighbors)) {
             kill.push(cell);
@@ -54,7 +54,7 @@ export default class Conway {
     let p: { row: number, column: number };
     for (p of perimeter) {
       const cell = this.getCellAt(p.row, p.column);
-      if (cell.living.age.setting >= 0) {
+      if (cell.living.alive.setting) {
         neighbors.push(cell);
       }
     }

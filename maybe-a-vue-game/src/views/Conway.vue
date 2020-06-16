@@ -36,7 +36,8 @@ export default class GameComponent extends Vue {
       columns: [...new Array(columnCount)].map((b, column) => ({
         rowId: row,
         columnId: column,
-        alive: { setting: true }, // conway.getCellAt(row, column).living.alive,
+        alive: conway.getCellAt(row, column).living.alive,
+        // alive: { setting: true },
         color: conway.getCellAt(row, column).props.color
       }))
     };
