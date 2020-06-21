@@ -1,4 +1,4 @@
-# maybe-a-vue-game
+# conway-vue
 
 ## Project setup
 ```
